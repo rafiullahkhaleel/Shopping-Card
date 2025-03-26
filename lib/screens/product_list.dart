@@ -78,7 +78,7 @@ List<int> productPrice = [50,30,50,60,20,40,80,10,20,50];
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500
                               ),),
-                              Text(productUnit[index]+'  Rs.'+productPrice[index].toString(),
+                              Text('${productUnit[index]}  Rs.${productPrice[index]}',
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w500
