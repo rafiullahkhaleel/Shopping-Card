@@ -1,14 +1,14 @@
-class Card{
+class Cart {
   late final int? id;
   final String? productsId;
   final String? productsName;
   final int? initialPrice;
   final int? productPrice;
-  final String? quantity;
+  final int? quantity;
   final String? unitTag;
   final String? image;
 
-  Card({
+  Cart({
     required this.id,
     required this.productsId,
     required this.productsName,
@@ -16,29 +16,29 @@ class Card{
     required this.productPrice,
     required this.quantity,
     required this.unitTag,
-    required this.image});
+    required this.image,
+  });
 
-  Card.fromMap(Map<dynamic,dynamic> res)
-      : id = res['id'],
-        productsId = res['productsId'],
-        productsName = res['productsName'],
-        initialPrice =res['initialPrice'],
-        productPrice = res['productPrice'],
-        quantity = res['quantity'],
-        unitTag = res['unitTag'],
-        image = res['image'];
+  Cart.fromMap(Map<dynamic, dynamic> res)
+    : id = res['id'],
+      productsId = res['productsId'],
+      productsName = res['productsName'],
+      initialPrice = res['initialPrice'],
+      productPrice = res['productPrice'],
+      quantity = res['quantity'],
+      unitTag = res['unitTag'],
+      image = res['image'];
 
-  Map<dynamic,Object?> toMap(){
+  Map<String, Object?> toMap() {
     return {
-      'id' : id,
-  'productsId' : productsId,
-  'productsName' :productsName,
-  'initialPrice' : initialPrice,
-  'productPrice' : productPrice,
-  'quantity' : quantity,
-  'unitTag' : unitTag,
-  'image' : image
+      'id': id,
+      'productsId': productsId,
+      'productsName': productsName,
+      'initialPrice': initialPrice,
+      'productPrice': productPrice,
+      'quantity': quantity,
+      'unitTag': unitTag,
+      'image': image,
     };
-}
-
+  }
 }
