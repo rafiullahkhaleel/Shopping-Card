@@ -1,6 +1,5 @@
 import 'package:shopping_card/model/card_model.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
 class CardDataBase {

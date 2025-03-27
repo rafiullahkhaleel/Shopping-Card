@@ -20,7 +20,6 @@ class CartProvider extends ChangeNotifier {
 
     _count = sp.getInt('count') ?? 0;
     _totalPrice = sp.getDouble('totalPrice') ?? 0.0;
-    notifyListeners();
   }
 
   increment() {
