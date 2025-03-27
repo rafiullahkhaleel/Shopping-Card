@@ -3,21 +3,22 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
-class CardDataBase{
+class CardDataBase {
   static Database? _database;
 
-
-  Future<Database?> get database async{
-    if(_database != null){
+  Future<Database?> get database async {
+    if (_database != null) {
       return _database;
     }
     String directory = await getDatabasesPath();
 
-    String path = join(directory,'database.db');
+    String path = join(directory, 'database.db');
 
-    _database=await openDatabase(path,version: 1,onCreate: (db, version) {
-      db.execute(
-        '''
+    _database = await openDatabase(
+      path,
+      version: 1,
+      onCreate: (db, version) {
+        db.execute('''
         CREATE TABLE cartTable(
         id INTEGER PRIMARY KEY,
         productsId VARCHAR UNIQUE,
@@ -28,13 +29,13 @@ class CardDataBase{
         unitTag TEXT,
         image TEXT
         )
-        '''
-      );
-    },);
+        ''');
+      },
+    );
     return _database;
   }
 
-  Future<Cart> insertData(Cart cart)async{
+  Future<Cart> insertData(Cart cart) async {
     Database? db = await database;
     await db!.insert('cartTable', cart.toMap());
     return cart;

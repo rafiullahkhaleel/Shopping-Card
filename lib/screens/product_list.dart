@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shopping_card/cart_provider/provider.dart';
 import 'package:shopping_card/constants/constant.dart';
+import 'package:shopping_card/model/card_database.dart';
 
 class ProductList extends StatefulWidget {
   const ProductList({super.key});
@@ -10,6 +13,7 @@ class ProductList extends StatefulWidget {
 
 class _ProductListState extends State<ProductList> {
 
+  CardDataBase dataBase = CardDataBase();
 
   List<String> productList = [
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm2uIUQrCRTr5qkh7GL2DPwuDfXUc-ucZsRweBviPzHcx4j6UOif0vMOocKhYbVw8DxtA&usqp=CAU',
@@ -33,6 +37,9 @@ List<int> productPrice = [50,30,50,60,20,40,80,10,20,50];
 
   @override
   Widget build(BuildContext context) {
+    print('build');
+    final provider = Provider.of<CartProvider>(context,listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -46,11 +53,14 @@ List<int> productPrice = [50,30,50,60,20,40,80,10,20,50];
         centerTitle: true,
         backgroundColor: primary,
         actions: [
-          Badge.count(
-            count: 0,
-            largeSize: 8,
-            child: Icon(Icons.shopping_cart, color: secondary),
-          ),
+          Consumer<CartProvider>(builder: (context,value,child){
+            print('only build');
+            return Badge.count(
+              count: value.count,
+              largeSize: 8,
+              child: Icon(Icons.shopping_cart, color: secondary),
+            );
+          }),
           SizedBox(width: 20),
         ],
       ),
@@ -86,17 +96,22 @@ List<int> productPrice = [50,30,50,60,20,40,80,10,20,50];
                               ),
                               Align(
                                 alignment: Alignment.bottomRight,
-                                child: Container(
-                                  height: 28,
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                    color: primary,
-                                    borderRadius: BorderRadius.circular(5)
+                                child: InkWell(
+                                  onTap: (){
+                                    provider.increment();
+                                  },
+                                  child: Container(
+                                    height: 30,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      color: primary,
+                                      borderRadius: BorderRadius.circular(5)
+                                    ),
+                                    child: Center(child: Text('Add to Card',style: TextStyle(
+                                        color: secondary,
+                                    fontWeight: FontWeight.w500
+                                    ),)),
                                   ),
-                                  child: Center(child: Text('Add to Card',style: TextStyle(
-                                      color: secondary,
-                                  fontWeight: FontWeight.w500
-                                  ),)),
                                 ),
                               )
                             ],
