@@ -46,4 +46,13 @@ class CardDataBase {
     List<Map<String,Object?>> queryList = await db!.query('cartTable');
     return queryList.map((e)=> Cart.fromMap(e)).toList();
   }
+
+  Future<int> deleteData(int id)async{
+    Database? db = await database;
+    return await db!.delete(
+      'cartTable',
+      where: 'id = ?',
+      whereArgs: [id]
+    );
+  }
 }

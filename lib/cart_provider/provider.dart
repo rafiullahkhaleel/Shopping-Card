@@ -57,7 +57,7 @@ class CartProvider extends ChangeNotifier {
   removePrice(double productPrice) {
     _totalPrice = _totalPrice - productPrice;
     setValue();
-    return _totalPrice;
+    notifyListeners();
   }
 
   double getPrice() {
