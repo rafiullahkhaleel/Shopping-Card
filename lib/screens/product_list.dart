@@ -4,6 +4,7 @@ import 'package:shopping_card/cart_provider/provider.dart';
 import 'package:shopping_card/constants/constant.dart';
 import 'package:shopping_card/model/card_database.dart';
 import 'package:shopping_card/model/card_model.dart';
+import 'package:shopping_card/screens/my_product.dart';
 
 class ProductList extends StatefulWidget {
   const ProductList({super.key});
@@ -74,16 +75,22 @@ class _ProductListState extends State<ProductList> {
         centerTitle: true,
         backgroundColor: primary,
         actions: [
-          Consumer<CartProvider>(
-            builder: (context, value, child) {
-              print('only build');
-              return Badge.count(
-                count: value.getCounter(),
-                largeSize: 8,
-                child: Icon(Icons.shopping_cart, color: secondary),
-              );
-
+          InkWell(
+            onTap: (){
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context)=> MyProduct()));
             },
+            child: Consumer<CartProvider>(
+              builder: (context, value, child) {
+                print('only build');
+                return Badge.count(
+                  count: value.getCounter(),
+                  largeSize: 8,
+                  child: Icon(Icons.shopping_cart, color: secondary),
+                );
+
+              },
+            ),
           ),
           SizedBox(width: 20),
         ],

@@ -39,4 +39,11 @@ class CardDataBase {
     await db!.insert('cartTable', cart.toMap());
     return cart;
   }
+
+  Future<List<Cart>> getQueryList()async{
+    Database? db = await database;
+
+    List<Map<String,Object?>> queryList = await db!.query('cartTable');
+    return queryList.map((e)=> Cart.fromMap(e)).toList();
+  }
 }
