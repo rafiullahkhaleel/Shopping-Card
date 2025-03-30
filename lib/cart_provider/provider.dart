@@ -7,6 +7,8 @@ class CartProvider extends ChangeNotifier {
   CartProvider() {
     getValue();
   }
+
+  List<String> selection = [];
   CardDataBase dataBase = CardDataBase();
   int _count = 0;
   get count => _count;
