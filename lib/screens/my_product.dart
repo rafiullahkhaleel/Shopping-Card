@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopping_card/model/card_database.dart';
+import 'package:shopping_card/model/card_model.dart';
 
 import '../cart_provider/provider.dart';
 import '../constants/constant.dart';
@@ -16,6 +17,7 @@ class _MyProductState extends State<MyProduct> {
   CardDataBase dataBase = CardDataBase();
   @override
   Widget build(BuildContext context) {
+    print(' All build');
     final provider = Provider.of<CartProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
@@ -32,7 +34,6 @@ class _MyProductState extends State<MyProduct> {
         actions: [
           Consumer<CartProvider>(
             builder: (context, value, child) {
-              print('only build');
               return Badge.count(
                 count: value.getCounter(),
                 largeSize: 8,
@@ -71,7 +72,7 @@ class _MyProductState extends State<MyProduct> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Row(
-                                        spacing: 10,
+                                        spacing: 5,
                                         children: [
                                           CircleAvatar(
                                             radius: 45,
@@ -102,52 +103,206 @@ class _MyProductState extends State<MyProduct> {
                                                     fontWeight: FontWeight.w500,
                                                   ),
                                                 ),
-                                                Align(
-                                                  alignment:
-                                                      Alignment.bottomRight,
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      setState(() {});
-                                                      dataBase.deleteData(
-                                                        snapshot
-                                                            .data![index]
-                                                            .id,
-                                                      );
-                                                      provider.decrement();
-                                                      provider.removePrice(
-                                                        double.parse(
-                                                          snapshot
-                                                              .data![index]
-                                                              .productPrice
-                                                              .toString(),
+                                              ],
+                                            ),
+                                          ),
+                                          Column(
+                                            spacing: 10,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  setState(() {});
+                                                  dataBase.deleteData(
+                                                    snapshot.data![index].id,
+                                                  );
+                                                  provider.decrement();
+                                                  int price =
+                                                      snapshot
+                                                          .data![index]
+                                                          .productPrice! *
+                                                      snapshot
+                                                          .data![index]
+                                                          .quantity!;
+                                                  provider.removePrice(
+                                                    double.parse(
+                                                      price.toString(),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Container(
+                                                  height: 30,
+                                                  width: 114,
+                                                  decoration: BoxDecoration(
+                                                    color: primary,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          5,
                                                         ),
-                                                      );
-                                                    },
-                                                    child: Container(
-                                                      height: 30,
-                                                      width: 100,
-                                                      decoration: BoxDecoration(
-                                                        color: primary,
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                              5,
-                                                            ),
-                                                      ),
-                                                      child: Center(
-                                                        child: Text(
-                                                          'Remove',
-                                                          style: TextStyle(
-                                                            color: secondary,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        ),
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      'Remove',
+                                                      style: TextStyle(
+                                                        color: secondary,
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                              Container(
+                                                height: 30,
+                                                width: 114,
+                                                decoration: BoxDecoration(
+                                                  color: primary,
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    IconButton(
+                                                      onPressed: () {
+                                                        int quantity =
+                                                            snapshot
+                                                                .data![index]
+                                                                .quantity!;
+                                                        if (quantity > 1) {
+                                                          setState(() {});
+                                                          quantity--;
+
+                                                          dataBase
+                                                              .updateQuantity(
+                                                                Cart(
+                                                                  id:
+                                                                      snapshot
+                                                                          .data![index]
+                                                                          .id,
+                                                                  productId:
+                                                                      snapshot
+                                                                          .data![index]
+                                                                          .productId,
+                                                                  productName:
+                                                                      snapshot
+                                                                          .data![index]
+                                                                          .productName,
+                                                                  initialPrice:
+                                                                      snapshot
+                                                                          .data![index]
+                                                                          .initialPrice,
+                                                                  productPrice:
+                                                                      snapshot
+                                                                          .data![index]
+                                                                          .productPrice,
+                                                                  quantity:
+                                                                      quantity,
+                                                                  unitTag:
+                                                                      snapshot
+                                                                          .data![index]
+                                                                          .unitTag,
+                                                                  image:
+                                                                      snapshot
+                                                                          .data![index]
+                                                                          .image,
+                                                                ),
+                                                              )
+                                                              .then((onValue) {
+                                                                provider.removePrice(
+                                                                  double.parse(
+                                                                    snapshot
+                                                                        .data![index]
+                                                                        .productPrice
+                                                                        .toString(),
+                                                                  ),
+                                                                );
+                                                              });
+                                                        }
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.remove,
+                                                        weight: 20,
+                                                      ),
+                                                      color: secondary,
+                                                    ),
+                                                    Text(
+                                                      snapshot
+                                                          .data![index]
+                                                          .quantity
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                        color: secondary,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 15,
+                                                      ),
+                                                    ),
+                                                    IconButton(
+                                                      onPressed: () {
+                                                        int quantity =
+                                                            snapshot
+                                                                .data![index]
+                                                                .quantity!;
+                                                        if (quantity < 99) {
+                                                          setState(() {});
+
+                                                          quantity++;
+
+                                                          dataBase
+                                                              .updateQuantity(
+                                                                Cart(
+                                                                  id:
+                                                                      snapshot
+                                                                          .data![index]
+                                                                          .id,
+                                                                  productId:
+                                                                      snapshot
+                                                                          .data![index]
+                                                                          .productId,
+                                                                  productName:
+                                                                      snapshot
+                                                                          .data![index]
+                                                                          .productName,
+                                                                  initialPrice:
+                                                                      snapshot
+                                                                          .data![index]
+                                                                          .initialPrice,
+                                                                  productPrice:
+                                                                      snapshot
+                                                                          .data![index]
+                                                                          .productPrice,
+                                                                  quantity:
+                                                                      quantity,
+                                                                  unitTag:
+                                                                      snapshot
+                                                                          .data![index]
+                                                                          .unitTag,
+                                                                  image:
+                                                                      snapshot
+                                                                          .data![index]
+                                                                          .image,
+                                                                ),
+                                                              )
+                                                              .then((onValue) {
+                                                                provider.addPrice(
+                                                                  double.parse(
+                                                                    snapshot
+                                                                        .data![index]
+                                                                        .productPrice
+                                                                        .toString(),
+                                                                  ),
+                                                                );
+                                                              });
+                                                        }
+                                                      },
+                                                      icon: Icon(Icons.add),
+                                                      color: secondary,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),

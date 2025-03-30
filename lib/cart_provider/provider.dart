@@ -4,8 +4,10 @@ import 'package:shopping_card/model/card_database.dart';
 import 'package:shopping_card/model/card_model.dart';
 
 class CartProvider extends ChangeNotifier {
-
-  CardDataBase dataBase =CardDataBase();
+  CartProvider() {
+    getValue();
+  }
+  CardDataBase dataBase = CardDataBase();
   int _count = 0;
   get count => _count;
 
@@ -25,9 +27,10 @@ class CartProvider extends ChangeNotifier {
     _count = sp.getInt('count') ?? 0;
     _totalPrice = sp.getDouble('totalPrice') ?? 0.0;
   }
+
   late Future<List<Cart>> _cart;
   Future<List<Cart>> get cart => _cart;
-  Future<List<Cart>> getData()async{
+  Future<List<Cart>> getData() async {
     _cart = dataBase.getQueryList();
     return _cart;
   }
@@ -52,6 +55,7 @@ class CartProvider extends ChangeNotifier {
   addPrice(double productPrice) {
     _totalPrice = _totalPrice + productPrice;
     setValue();
+    notifyListeners();
   }
 
   removePrice(double productPrice) {

@@ -40,19 +40,25 @@ class CardDataBase {
     return cart;
   }
 
-  Future<List<Cart>> getQueryList()async{
+  Future<List<Cart>> getQueryList() async {
     Database? db = await database;
 
-    List<Map<String,Object?>> queryList = await db!.query('cartTable');
-    return queryList.map((e)=> Cart.fromMap(e)).toList();
+    List<Map<String, Object?>> queryList = await db!.query('cartTable');
+    return queryList.map((e) => Cart.fromMap(e)).toList();
   }
 
-  Future<int> deleteData(int id)async{
+  Future<int> deleteData(int id) async {
     Database? db = await database;
-    return await db!.delete(
+    return await db!.delete('cartTable', where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<int> updateQuantity(Cart cart) async {
+    Database? db = await database;
+    return await db!.update(
       'cartTable',
+      cart.toMap(),
       where: 'id = ?',
-      whereArgs: [id]
+      whereArgs: [cart.id],
     );
   }
 }

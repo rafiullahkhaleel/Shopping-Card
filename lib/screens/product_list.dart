@@ -59,7 +59,6 @@ class _ProductListState extends State<ProductList> {
 
   @override
   Widget build(BuildContext context) {
-    print('build');
     final provider = Provider.of<CartProvider>(context, listen: false);
 
     return Scaffold(
@@ -76,19 +75,19 @@ class _ProductListState extends State<ProductList> {
         backgroundColor: primary,
         actions: [
           InkWell(
-            onTap: (){
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=> MyProduct()));
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyProduct()),
+              );
             },
             child: Consumer<CartProvider>(
               builder: (context, value, child) {
-                print('only build');
                 return Badge.count(
                   count: value.getCounter(),
                   largeSize: 8,
                   child: Icon(Icons.shopping_cart, color: secondary),
                 );
-
               },
             ),
           ),
@@ -148,22 +147,19 @@ class _ProductListState extends State<ProductList> {
                                       )
                                       .then((onValue) {
                                         provider.increment();
-                                        provider.addPrice(double.parse(productPrice[index].toString()));
-                                        print(
-                                          '<<<<<<<<<<<<<<<<<Products is added Successfully>>>>>>>>>>>>>>>>>>>>',
+                                        provider.addPrice(
+                                          double.parse(
+                                            productPrice[index].toString(),
+                                          ),
                                         );
                                       })
-                                      .onError((handleError, stack) {
-                                        print(
-                                          '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<$handleError>>>>>>>>>>>>>>>>>>>>>>>>>>>',
-                                        );
-                                      });
+                                      .onError((handleError, stack) {});
                                 },
                                 child: Container(
                                   height: 30,
                                   width: 100,
                                   decoration: BoxDecoration(
-                                    color: primary,
+                                    color: Color(0xff1A1A1A),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: Center(
