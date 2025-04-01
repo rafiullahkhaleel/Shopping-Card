@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_card/model/card_database.dart';
@@ -8,7 +10,8 @@ class CartProvider extends ChangeNotifier {
     getValue();
   }
 
-  List<String> selection = [];
+  List<String> _selection = [];
+  get selection => _selection;
   CardDataBase dataBase = CardDataBase();
   int _count = 0;
   get count => _count;
@@ -21,13 +24,15 @@ class CartProvider extends ChangeNotifier {
 
     sp.setInt('count', _count);
     sp.setDouble('totalPrice', _totalPrice);
+    sp.setStringList('selection', _selection);
   }
 
-  Future<void> getValue() async {
+   Future<void> getValue() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
 
     _count = sp.getInt('count') ?? 0;
     _totalPrice = sp.getDouble('totalPrice') ?? 0.0;
+    _selection = sp.getStringList('selection')!;
   }
 
   late Future<List<Cart>> _cart;
@@ -36,6 +41,7 @@ class CartProvider extends ChangeNotifier {
     _cart = dataBase.getQueryList();
     return _cart;
   }
+
 
   increment() {
     _count++;

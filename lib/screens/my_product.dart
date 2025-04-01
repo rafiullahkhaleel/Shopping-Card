@@ -68,250 +68,266 @@ class _MyProductState extends State<MyProduct> {
                               return Column(
                                 children: [
                                   Consumer<CartProvider>(
-                                      builder: (context,value,child){
-                                        return Card(
-                                          elevation: 5,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              spacing: 5,
-                                              children: [
-                                                CircleAvatar(
-                                                  radius: 45,
-                                                  backgroundImage: NetworkImage(
-                                                    snapshot.data![index].image
-                                                        .toString(),
-                                                  ),
+                                    builder: (context, value, child) {
+                                      return Card(
+                                        elevation: 5,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            spacing: 5,
+                                            children: [
+                                              CircleAvatar(
+                                                radius: 45,
+                                                backgroundImage: NetworkImage(
+                                                  snapshot.data![index].image
+                                                      .toString(),
                                                 ),
-                                                Expanded(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                        snapshot
-                                                            .data![index]
-                                                            .productName
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                          fontSize: 15,
-                                                          fontWeight: FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        '${snapshot.data![index].unitTag}  Rs.${snapshot.data![index].productPrice}',
-                                                        style: TextStyle(
-                                                          fontSize: 15,
-                                                          fontWeight: FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Column(
-                                                  spacing: 10,
+                                              ),
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
-                                                    InkWell(
-                                                      onTap: () {
-                                                        setState(() {});
-                                                        dataBase.deleteData(
-                                                          snapshot.data![index].id,
-                                                        );
-                                                        provider.decrement();
-                                                        int price =
-                                                            snapshot
-                                                                .data![index]
-                                                                .productPrice! *
-                                                                snapshot
-                                                                    .data![index]
-                                                                    .quantity!;
-                                                        provider.removePrice(
-                                                          double.parse(
-                                                            price.toString(),
-                                                          ),
-                                                        );
-                                                        value.selection.remove(snapshot.data![index].productName);
-                                                      },
-                                                      child: Container(
-                                                        height: 30,
-                                                        width: 114,
-                                                        decoration: BoxDecoration(
-                                                          color: primary,
-                                                          borderRadius:
-                                                          BorderRadius.circular(
-                                                            5,
-                                                          ),
-                                                        ),
-                                                        child: Center(
-                                                          child: Text(
-                                                            'Remove',
-                                                            style: TextStyle(
-                                                              color: secondary,
-                                                              fontWeight:
-                                                              FontWeight.w500,
-                                                            ),
-                                                          ),
-                                                        ),
+                                                    Text(
+                                                      snapshot
+                                                          .data![index]
+                                                          .productName
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                       ),
                                                     ),
-                                                    Container(
+                                                    Text(
+                                                      '${snapshot.data![index].unitTag}  Rs.${snapshot.data![index].productPrice}',
+                                                      style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Column(
+                                                spacing: 10,
+                                                children: [
+                                                  InkWell(
+                                                    onTap: () {
+                                                      setState(() {});
+                                                      dataBase.deleteData(
+                                                        snapshot
+                                                            .data![index]
+                                                            .id,
+                                                      );
+                                                      provider.decrement();
+                                                      int price =
+                                                          snapshot
+                                                              .data![index]
+                                                              .productPrice! *
+                                                          snapshot
+                                                              .data![index]
+                                                              .quantity!;
+                                                      provider.removePrice(
+                                                        double.parse(
+                                                          price.toString(),
+                                                        ),
+                                                      );
+                                                      value.selection.remove(
+                                                        snapshot
+                                                            .data![index]
+                                                            .productName,
+                                                      );
+                                                    },
+                                                    child: Container(
                                                       height: 30,
                                                       width: 114,
                                                       decoration: BoxDecoration(
                                                         color: primary,
                                                         borderRadius:
-                                                        BorderRadius.circular(5),
+                                                            BorderRadius.circular(
+                                                              5,
+                                                            ),
                                                       ),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                        children: [
-                                                          IconButton(
-                                                            onPressed: () {
-                                                              int quantity =
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .quantity!;
-                                                              if (quantity > 1) {
-                                                                setState(() {});
-                                                                quantity--;
-
-                                                                dataBase
-                                                                    .updateQuantity(
-                                                                  Cart(
-                                                                    id:
-                                                                    snapshot
-                                                                        .data![index]
-                                                                        .id,
-                                                                    productId:
-                                                                    snapshot
-                                                                        .data![index]
-                                                                        .productId,
-                                                                    productName:
-                                                                    snapshot
-                                                                        .data![index]
-                                                                        .productName,
-                                                                    initialPrice:
-                                                                    snapshot
-                                                                        .data![index]
-                                                                        .initialPrice,
-                                                                    productPrice:
-                                                                    snapshot
-                                                                        .data![index]
-                                                                        .productPrice,
-                                                                    quantity:
-                                                                    quantity,
-                                                                    unitTag:
-                                                                    snapshot
-                                                                        .data![index]
-                                                                        .unitTag,
-                                                                    image:
-                                                                    snapshot
-                                                                        .data![index]
-                                                                        .image,
-                                                                  ),
-                                                                )
-                                                                    .then((onValue) {
-                                                                  provider.removePrice(
-                                                                    double.parse(
-                                                                      snapshot
-                                                                          .data![index]
-                                                                          .productPrice
-                                                                          .toString(),
-                                                                    ),
-                                                                  );
-                                                                });
-                                                              }
-                                                            },
-                                                            icon: Icon(
-                                                              Icons.remove,
-                                                              weight: 20,
-                                                            ),
+                                                      child: Center(
+                                                        child: Text(
+                                                          'Remove',
+                                                          style: TextStyle(
                                                             color: secondary,
+                                                            fontWeight:
+                                                                FontWeight.w500,
                                                           ),
-                                                          Text(
-                                                            snapshot
-                                                                .data![index]
-                                                                .quantity
-                                                                .toString(),
-                                                            style: TextStyle(
-                                                              color: secondary,
-                                                              fontWeight:
-                                                              FontWeight.bold,
-                                                              fontSize: 15,
-                                                            ),
-                                                          ),
-                                                          IconButton(
-                                                            onPressed: () {
-                                                              int quantity =
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .quantity!;
-                                                              if (quantity < 99) {
-                                                                setState(() {});
-
-                                                                quantity++;
-
-                                                                dataBase
-                                                                    .updateQuantity(
-                                                                  Cart(
-                                                                    id:
-                                                                    snapshot
-                                                                        .data![index]
-                                                                        .id,
-                                                                    productId:
-                                                                    snapshot
-                                                                        .data![index]
-                                                                        .productId,
-                                                                    productName:
-                                                                    snapshot
-                                                                        .data![index]
-                                                                        .productName,
-                                                                    initialPrice:
-                                                                    snapshot
-                                                                        .data![index]
-                                                                        .initialPrice,
-                                                                    productPrice:
-                                                                    snapshot
-                                                                        .data![index]
-                                                                        .productPrice,
-                                                                    quantity:
-                                                                    quantity,
-                                                                    unitTag:
-                                                                    snapshot
-                                                                        .data![index]
-                                                                        .unitTag,
-                                                                    image:
-                                                                    snapshot
-                                                                        .data![index]
-                                                                        .image,
-                                                                  ),
-                                                                )
-                                                                    .then((onValue) {
-                                                                  provider.addPrice(
-                                                                    double.parse(
-                                                                      snapshot
-                                                                          .data![index]
-                                                                          .productPrice
-                                                                          .toString(),
-                                                                    ),
-                                                                  );
-                                                                });
-                                                              }
-                                                            },
-                                                            icon: Icon(Icons.add),
-                                                            color: secondary,
-                                                          ),
-                                                        ],
+                                                        ),
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
+                                                  ),
+                                                  Container(
+                                                    height: 30,
+                                                    width: 114,
+                                                    decoration: BoxDecoration(
+                                                      color: primary,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            5,
+                                                          ),
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        IconButton(
+                                                          onPressed: () {
+                                                            int quantity =
+                                                                snapshot
+                                                                    .data![index]
+                                                                    .quantity!;
+                                                            if (quantity > 1) {
+                                                              setState(() {});
+                                                              quantity--;
+
+                                                              dataBase
+                                                                  .updateQuantity(
+                                                                    Cart(
+                                                                      id:
+                                                                          snapshot
+                                                                              .data![index]
+                                                                              .id,
+                                                                      productId:
+                                                                          snapshot
+                                                                              .data![index]
+                                                                              .productId,
+                                                                      productName:
+                                                                          snapshot
+                                                                              .data![index]
+                                                                              .productName,
+                                                                      initialPrice:
+                                                                          snapshot
+                                                                              .data![index]
+                                                                              .initialPrice,
+                                                                      productPrice:
+                                                                          snapshot
+                                                                              .data![index]
+                                                                              .productPrice,
+                                                                      quantity:
+                                                                          quantity,
+                                                                      unitTag:
+                                                                          snapshot
+                                                                              .data![index]
+                                                                              .unitTag,
+                                                                      image:
+                                                                          snapshot
+                                                                              .data![index]
+                                                                              .image,
+                                                                    ),
+                                                                  )
+                                                                  .then((
+                                                                    onValue,
+                                                                  ) {
+                                                                    provider.removePrice(
+                                                                      double.parse(
+                                                                        snapshot
+                                                                            .data![index]
+                                                                            .productPrice
+                                                                            .toString(),
+                                                                      ),
+                                                                    );
+                                                                  });
+                                                            }
+                                                          },
+                                                          icon: Icon(
+                                                            Icons.remove,
+                                                            weight: 20,
+                                                          ),
+                                                          color: secondary,
+                                                        ),
+                                                        Text(
+                                                          snapshot
+                                                              .data![index]
+                                                              .quantity
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                            color: secondary,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 15,
+                                                          ),
+                                                        ),
+                                                        IconButton(
+                                                          onPressed: () {
+                                                            int quantity =
+                                                                snapshot
+                                                                    .data![index]
+                                                                    .quantity!;
+                                                            if (quantity < 99) {
+                                                              setState(() {});
+
+                                                              quantity++;
+
+                                                              dataBase
+                                                                  .updateQuantity(
+                                                                    Cart(
+                                                                      id:
+                                                                          snapshot
+                                                                              .data![index]
+                                                                              .id,
+                                                                      productId:
+                                                                          snapshot
+                                                                              .data![index]
+                                                                              .productId,
+                                                                      productName:
+                                                                          snapshot
+                                                                              .data![index]
+                                                                              .productName,
+                                                                      initialPrice:
+                                                                          snapshot
+                                                                              .data![index]
+                                                                              .initialPrice,
+                                                                      productPrice:
+                                                                          snapshot
+                                                                              .data![index]
+                                                                              .productPrice,
+                                                                      quantity:
+                                                                          quantity,
+                                                                      unitTag:
+                                                                          snapshot
+                                                                              .data![index]
+                                                                              .unitTag,
+                                                                      image:
+                                                                          snapshot
+                                                                              .data![index]
+                                                                              .image,
+                                                                    ),
+                                                                  )
+                                                                  .then((
+                                                                    onValue,
+                                                                  ) {
+                                                                    provider.addPrice(
+                                                                      double.parse(
+                                                                        snapshot
+                                                                            .data![index]
+                                                                            .productPrice
+                                                                            .toString(),
+                                                                      ),
+                                                                    );
+                                                                  });
+                                                            }
+                                                          },
+                                                          icon: Icon(Icons.add),
+                                                          color: secondary,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
                                           ),
-                                        );
-                                      }),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                   SizedBox(height: 5),
                                 ],
                               );

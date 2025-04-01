@@ -14,6 +14,12 @@ class ProductList extends StatefulWidget {
 }
 
 class _ProductListState extends State<ProductList> {
+  @override
+  void initState() {
+     CartProvider().getValue();
+    super.initState();
+  }
+
   CardDataBase dataBase = CardDataBase();
 
   List<String> productImage = [
@@ -100,99 +106,99 @@ class _ProductListState extends State<ProductList> {
         itemBuilder: (context, index) {
           return Column(
             children: [
-              Consumer<CartProvider>(
-                  builder: (context,value,child){
-                    print('only build');
-                    return Card(
-                      elevation: 5,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          spacing: 10,
-                          children: [
-                            CircleAvatar(
-                              radius: 45,
-                              backgroundImage: NetworkImage(productImage[index]),
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    productName[index],
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  Text(
-                                    '${productUnit[index]}  Rs.${productPrice[index]}',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: InkWell(
-                                      onTap: () {
-                                        print('build');
-                                        dataBase
-                                            .insertData(
-                                          Cart(
-                                            id: index,
-                                            productId: index.toString(),
-                                            productName: productName[index],
-                                            initialPrice: productPrice[index],
-                                            productPrice: productPrice[index],
-                                            quantity: 1,
-                                            unitTag: productUnit[index],
-                                            image: productImage[index],
-                                          ),
-                                        )
-                                            .then((onValue) {
-                                          provider.increment();
-                                          provider.addPrice(
-                                            double.parse(
-                                              productPrice[index].toString(),
-                                            ),
-                                          );
-                                          value.selection.add(productName[index]);
-                                        })
-                                            .onError((handleError, stack) {});
-                                      },
-                                      child: Container(
-                                        height: 30,
-                                        width: 100,
-                                        decoration: BoxDecoration(
-                                          color: value.selection.contains(productName[index]) ? Colors.green
-                                          : Color(0xff1A1A1A),
-                                          borderRadius: BorderRadius.circular(5),
+            Card(
+            elevation: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                spacing: 10,
+                children: [
+                  CircleAvatar(
+                    radius: 45,
+                    backgroundImage: NetworkImage(productImage[index]),
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          productName[index],
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Text(
+                          '${productUnit[index]}  Rs.${productPrice[index]}',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Consumer<CartProvider>(
+                              builder: (context,value,child){
+                                print('build');
+                                return InkWell(
+                                  onTap: () {
+                                    dataBase
+                                        .insertData(
+                                      Cart(
+                                        id: index,
+                                        productId: index.toString(),
+                                        productName: productName[index],
+                                        initialPrice: productPrice[index],
+                                        productPrice: productPrice[index],
+                                        quantity: 1,
+                                        unitTag: productUnit[index],
+                                        image: productImage[index],
+                                      ),
+                                    )
+                                        .then((onValue) {
+                                      provider.increment();
+                                      provider.addPrice(
+                                        double.parse(
+                                          productPrice[index].toString(),
                                         ),
-                                        child: Center(
-                                          child: value.selection.contains(productName[index]) ? Text('Selected',style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                          ),)
+                                      );
+                                      value.selection.add(productName[index]);
+                                      value.getValue();
+                                    })
+                                        .onError((handleError, stack) {});
+                                  },
+                                  child: Container(
+                                    height: 30,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      color: value.selection.contains(productName[index]) ? Colors.green
+                                          : Color(0xff1A1A1A),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Center(
+                                      child: value.selection.contains(productName[index]) ? Text('Selected',style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                      ),)
                                           : Text(
-                                            'Add to Card',
-                                            style: TextStyle(
-                                              color: secondary,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
+                                        'Add to Card',
+                                        style: TextStyle(
+                                          color: secondary,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ],
+                                );
+                              })
                         ),
-                      ),
-                    );
-                  }),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
               SizedBox(height: 5),
             ],
           );
